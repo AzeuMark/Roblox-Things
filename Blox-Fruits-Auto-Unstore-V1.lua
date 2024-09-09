@@ -60,8 +60,7 @@ local function getFruitInventoryList()
 	return lowRaritySwords
 end
 
-
-print(("\n"):rep(20))
+print("AUTO UNSTORE FRUITS! Created by Azeu_Markヅ")
 
 local function checkBackpackForTools(player)
 	local backpack = player:FindFirstChild("Backpack")
