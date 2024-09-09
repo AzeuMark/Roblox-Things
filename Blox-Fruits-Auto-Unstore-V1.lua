@@ -6,9 +6,9 @@ screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local statusLabel = Instance.new("TextLabel")
 statusLabel.Name = "MyTextLabel"
-statusLabel.Size = UDim2.new(0, 100, 0, 25)  -- Width, Height
-statusLabel.Position = UDim2.new(1, -210, 0, 10)  -- Right side with some offset
-statusLabel.AnchorPoint = Vector2.new(1, 0)  -- Anchor to the right side
+statusLabel.Size = UDim2.new(0, 100, 0, 25) 
+statusLabel.Position = UDim2.new(1, -210, 0, 10)
+statusLabel.AnchorPoint = Vector2.new(1, 0)
 statusLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 statusLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 statusLabel.TextScaled = true
@@ -17,9 +17,9 @@ statusLabel.Parent = screenGui
 
 local statusButton = Instance.new("TextButton")
 statusButton.Name = "MyTextButton"
-statusButton.Size = UDim2.new(0, 100, 0, 25)  -- Width, Height
-statusButton.Position = UDim2.new(1, -100, 0, 10)  -- Positioned next to the TextLabel
-statusButton.AnchorPoint = Vector2.new(1, 0)  -- Anchor to the right side
+statusButton.Size = UDim2.new(0, 100, 0, 25)
+statusButton.Position = UDim2.new(1, -100, 0, 10)
+statusButton.AnchorPoint = Vector2.new(1, 0)
 statusButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
 statusButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 statusButton.TextScaled = true
