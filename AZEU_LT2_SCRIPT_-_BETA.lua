@@ -3430,8 +3430,8 @@ local function C_4()
 			partOwner = partOwner.Name
 		end
 
-		local allowedTypes = {"Gift", "Loose Item", "Tool", "Structure", "Furniture", "Vehicle"}
-		local forChecking = {"Furniture", "Sawmill", "Structure", "Vehicle"}
+		local allowedTypes = {"Gift", "Loose Item", "Tool", "Wire", "Structure", "Furniture", "Vehicle"}
+		local forChecking = {"Wire", "Furniture", "Sawmill", "Structure", "Vehicle"}
 		local notAllowedPartNames = {"Sawmill"}
 
 		if (partLastInteraction and table.find(allowedTypes, partType)) or partName == "Plank" or string.find(partName, '^Loose_') then
@@ -3831,7 +3831,7 @@ local function C_8()
 
 			if PrimaryPart then
 				tpPlayer(PrimaryPart.Position)
-				task.wait(0.1)
+				task.wait(0.01)
 				for i = 1, 10 do
 					task.wait(0.05)
 					game:GetService("ReplicatedStorage"):WaitForChild("Interaction"):WaitForChild("ClientIsDragging"):FireServer(model)
@@ -3841,10 +3841,10 @@ local function C_8()
 						tpPlayer(PrimaryPart.Position)
 					end
 				end
-				task.wait(0.1)
+				task.wait(0.01)
 			elseif WoodSection then ----[[ PLANKS ]]----
 				tpPlayer(WoodSection.Position)
-				task.wait(0.1)
+				task.wait(0.01)
 				for i = 1, 10 do
 					task.wait(0.05)
 					game:GetService("ReplicatedStorage"):WaitForChild("Interaction"):WaitForChild("ClientIsDragging"):FireServer(model)
@@ -3854,16 +3854,16 @@ local function C_8()
 						tpPlayer(WoodSection.Position)
 					end
 				end
-				task.wait(0.1)
+				task.wait(0.01)
 			elseif string.match(model.Name, "^Loose_") and InnerWood then	
 				tpPlayer(InnerWood.Position)
-				task.wait(0.1)
+				task.wait(0.01)
 				for i = 1, 20 do
 					task.wait(0.05)
 					game:GetService("ReplicatedStorage"):WaitForChild("Interaction"):WaitForChild("ClientIsDragging"):FireServer(model)
 					if i == 10 then
 						model:MoveTo(targetLocation + Vector3.new(0, 10, 0))
-						task.wait(0.03)
+						task.wait(0.01)
 						tpPlayer(InnerWood.Position)
 					end
 				end
