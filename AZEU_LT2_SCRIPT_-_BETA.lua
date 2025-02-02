@@ -3449,7 +3449,9 @@ local function C_4()
 			local selectionBox = part:FindFirstChild("SelectionBox")
 
 			if not selectionBox and not isAltPressed then
+				part.Parent:SetAttribute('azeuForTeleport', true)
 				if string.find(partName, '^Loose_') then
+
 					for _, obj in pairs(part.Parent:GetChildren())  do
 						if obj:isA('BasePart') and obj.Name == "WoodSection" then
 							selectionBox = Instance.new("SelectionBox")
@@ -3457,7 +3459,6 @@ local function C_4()
 							selectionBox.Adornee = obj
 							selectionBox.LineThickness = 0.05
 							selectionBox.Color3 = HighlightColor
-							part.Parent:SetAttribute('azeuForTeleport', true)
 						end
 					end
 				else
@@ -3466,9 +3467,9 @@ local function C_4()
 					selectionBox.Adornee = part
 					selectionBox.LineThickness = 0.05
 					selectionBox.Color3 = HighlightColor
-					part.Parent:SetAttribute('azeuForTeleport', true)
 				end
 			elseif selectionBox and isAltPressed then
+				part.Parent:SetAttribute('azeuForTeleport', nil)
 				if string.find(partName, '^Loose_') then
 					for _, obj in pairs(part.Parent:GetChildren())  do
 						if obj.Name == "WoodSection" then
@@ -3481,7 +3482,6 @@ local function C_4()
 					end
 				else
 					selectionBox:Destroy()
-					part.Parent:SetAttribute('azeuForTeleport', nil)
 				end
 			end
 		end
