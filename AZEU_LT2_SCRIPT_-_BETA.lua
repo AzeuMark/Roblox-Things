@@ -9,7 +9,7 @@
 local G2L = {};
 
 -- StarterGui.SkibidiAzeuGUI
-G2L["1"] = Instance.new("ScreenGui", game.CoreGui);
+G2L["1"] = Instance.new("ScreenGui", game.CoreGui)
 G2L["1"]["Name"] = [[SkibidiAzeuGUI]];
 G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
 
@@ -347,6 +347,7 @@ G2L["28"]["BackgroundTransparency"] = 1;
 
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.flyBoxSpeed
 G2L["29"] = Instance.new("TextBox", G2L["28"]);
+G2L["29"]["CursorPosition"] = -1;
 G2L["29"]["Name"] = [[flyBoxSpeed]];
 G2L["29"]["PlaceholderColor3"] = Color3.fromRGB(92, 92, 92);
 G2L["29"]["BorderSizePixel"] = 0;
@@ -358,7 +359,7 @@ G2L["29"]["PlaceholderText"] = [[100]];
 G2L["29"]["Size"] = UDim2.new(0, 40, 0, 20);
 G2L["29"]["Position"] = UDim2.new(0.74333, 0, 0.14, 0);
 G2L["29"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["29"]["Text"] = [[]];
+G2L["29"]["Text"] = [[300]];
 G2L["29"]["LayoutOrder"] = 2;
 
 
@@ -544,6 +545,7 @@ G2L["3d"]["LayoutOrder"] = 1;
 
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.walkBox
 G2L["3e"] = Instance.new("TextBox", G2L["3d"]);
+G2L["3e"]["CursorPosition"] = -1;
 G2L["3e"]["Name"] = [[walkBox]];
 G2L["3e"]["PlaceholderColor3"] = Color3.fromRGB(92, 92, 92);
 G2L["3e"]["BorderSizePixel"] = 0;
@@ -555,7 +557,7 @@ G2L["3e"]["PlaceholderText"] = [[16]];
 G2L["3e"]["Size"] = UDim2.new(0, 40, 0, 20);
 G2L["3e"]["Position"] = UDim2.new(0.74333, 0, 0.14, 0);
 G2L["3e"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["3e"]["Text"] = [[]];
+G2L["3e"]["Text"] = [[100]];
 G2L["3e"]["LayoutOrder"] = 2;
 
 
@@ -612,6 +614,7 @@ G2L["44"]["LayoutOrder"] = 1;
 
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.jumpBox
 G2L["45"] = Instance.new("TextBox", G2L["44"]);
+G2L["45"]["CursorPosition"] = -1;
 G2L["45"]["Name"] = [[jumpBox]];
 G2L["45"]["PlaceholderColor3"] = Color3.fromRGB(92, 92, 92);
 G2L["45"]["BorderSizePixel"] = 0;
@@ -623,7 +626,7 @@ G2L["45"]["PlaceholderText"] = [[50]];
 G2L["45"]["Size"] = UDim2.new(0, 40, 0, 20);
 G2L["45"]["Position"] = UDim2.new(0.74333, 0, 0.14, 0);
 G2L["45"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["45"]["Text"] = [[]];
+G2L["45"]["Text"] = [[100]];
 G2L["45"]["LayoutOrder"] = 2;
 
 
@@ -3202,14 +3205,14 @@ G2L["155"] = Instance.new("UICorner", G2L["154"]);
 
 -- StarterGui.SkibidiAzeuGUI.Scripts.GroupItemSelector
 local function C_3()
-local script = G2L["3"];
+	local script = G2L["3"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local thisSwitch = screenGui and screenGui:FindFirstChild("switchGroupSelector", true)
 	local ItemSelectorSwitch = screenGui and screenGui:FindFirstChild("switchItemSelector", true)
 	local SelectedPlayerBtn = screenGui and screenGui:FindFirstChild("SelectedPlayerBtn", true)
-	
+
 	local MinimizeButton = screenGui and screenGui:FindFirstChild("MinimizeButton", true)
-	
+
 	local function sendNotification(title, text, duration)
 		game.StarterGui:SetCore("SendNotification", 
 			{
@@ -3219,19 +3222,19 @@ local script = G2L["3"];
 			}
 		)
 	end
-	
+
 	local player = game.Players.LocalPlayer
 	local mouse = player:GetMouse()
-	
+
 	local isEnabled = false
-	
+
 	thisSwitch.AttributeChanged:Connect(function(attrName)
 		local isON = thisSwitch:GetAttribute('isON')
 		if not isON then
 			isEnabled = false
 		else
 			local player_found = game.Players:FindFirstChild(SelectedPlayerBtn.Text)
-			
+
 			if not player_found then
 				sendNotification("ITEM SELECTION ERROR", "Invalid player selected.")
 				thisSwitch:SetAttribute('isON', false) 
@@ -3241,131 +3244,97 @@ local script = G2L["3"];
 			end
 		end
 	end)
-	
+
 	local UserInputService = game:GetService("UserInputService")
 	local HighlightColor = Color3.fromRGB(0, 190, 0)
 	local DefaultColor = Color3.fromRGB(0, 190, 0)
-	
+
 	local isAltPressed = false
-	
-	-- Function to highlight parts
-	local function highlighter(model, selected_type)
-		local modelName = model.Name
-		local modelType = model:FindFirstChild('Type')
-		local modelOwner = model:FindFirstChild('Owner')
-		local hasInteraction = false
-	
-		if modelType and modelOwner then
-			modelType = tostring(modelType['Value'])
-			modelOwner = tostring(modelOwner['Value'])
-	
-			local modelInteraction = model.Owner:FindFirstChild('LastInteraction')
-	
-			if modelInteraction then
-				hasInteraction = true
-			end
-		end
-	
-		-- VALIDATE IF VALUES EXIST
-		if type(modelType) ~= 'string' or type(modelOwner) ~= 'string' then return end
-		-- VALIDATE STUFFS
-		local validTypes = {"Gift", "Loose Item", "Tool", "Structure", "Furniture", "Vehicle"}
-		local recheckTypes = {"Furniture", "Sawmill", "Structure", "Vehicle"}
-		local invalidPartNames = {"Sawmill"}
-	
-		if not table.find(validTypes, modelType) then
-			return
-		elseif table.find(recheckTypes, modelType) then
-			local requiredObject = model:FindFirstChild("PurchasedBoxItemName")
-			if not requiredObject then
-				return
-			end
-		end
-	
-		-- VALIDATE TYPE
-		if modelType ~= selected_type then return end
-	
-		-- VALIDATE OWNER
-		if modelOwner ~= SelectedPlayerBtn.Text then return end
-	
-		-- VALIDATE HAS INTERACTION
-		if not hasInteraction then return end
-	
+
+	local function highlight(model)
 		if not isAltPressed then
+			model:SetAttribute('azeuForTeleport', true)
 			for _, part in pairs(model:GetChildren())  do
-				local selectionBox = part:FindFirstChild("SelectionBox")
-	
-				if not selectionBox then
-					selectionBox = Instance.new("SelectionBox")
-					selectionBox.Parent = part
-					selectionBox.Adornee = part
-					selectionBox.LineThickness = 0.05
-					selectionBox.Color3 = HighlightColor
-					model:SetAttribute('azeuForTeleport', true)
+				if part:IsA('BasePart') then
+					local selectionBox = part:FindFirstChild("SelectionBox")
+
+					if not selectionBox then
+						selectionBox = Instance.new("SelectionBox")
+						selectionBox.Parent = part
+						selectionBox.Adornee = part
+						selectionBox.LineThickness = 0.05
+						selectionBox.Color3 = HighlightColor
+
+					end
 				end
 			end
 		elseif isAltPressed then 
+			model:SetAttribute('azeuForTeleport', nil)
 			for _, part in pairs(model:GetChildren())  do
-				local selectionBox = part:FindFirstChild("SelectionBox")
-	
-				if selectionBox then
-					selectionBox:Destroy()
-					model:SetAttribute('azeuForTeleport', nil)
+				if part:IsA('BasePart') then
+					local selectionBox = part:FindFirstChild("SelectionBox")
+
+					if selectionBox then
+						selectionBox:Destroy()
+
+					end
 				end
 			end
 		end
 	end
-	
+
 	-- Handle mouse click on an object
 	local function onMouseButtonClickDown()
 		if not isEnabled then return end
-	
+
 		local clickedObject = mouse.Target
 		if clickedObject and clickedObject:IsA("BasePart") and (clickedObject:IsDescendantOf(workspace.PlayerModels) or clickedObject:IsDescendantOf(workspace.LogModels)) then
-	
-			local targetType = clickedObject.Parent:FindFirstChild('Type')
-			local targetTreeClass = clickedObject.Parent:FindFirstChild('TreeClass')
-	
-			if (targetType) then
-				targetType = tostring(targetType['Value'])
-			elseif targetTreeClass then
-				targetTreeClass = tostring(targetTreeClass['Value'])
+
+			local targetModelName = clickedObject.Parent.Name
+			local targetTreeClass = clickedObject.Parent:FindFirstChild('TreeClass') and tostring(clickedObject.Parent:FindFirstChild('TreeClass').Value)
+			local selectedOwner = SelectedPlayerBtn.Text
+
+			local gameModelsList = {}
+
+			for _, model in ipairs(workspace.PlayerModels:GetChildren()) do
+				table.insert(gameModelsList, model)
 			end
-	
-	
-			if not targetType and not targetTreeClass then return end
-	
-			if targetType then
-				for _, model in pairs(workspace.PlayerModels:GetChildren()) do
-					local modelName = model.Name
-					local modelType = model:FindFirstChild('Type')
-					local modelOwner = model:FindFirstChild('Owner')
-					local hasInteraction = false
-	
-					if modelType and modelOwner then
-						modelType = tostring(modelType.Value)
-						modelOwner = tostring(modelOwner.Value)
-	
-						local modelInteraction = model.Owner:FindFirstChild('LastInteraction')
-	
-						if modelInteraction then
-							hasInteraction = true
-						end
+			for _, model in ipairs(workspace.LogModels:GetChildren()) do
+				table.insert(gameModelsList, model)
+			end
+
+			-- DO STUFF
+			if not targetModelName and not targetTreeClass then return end
+
+			for _, model in ipairs(gameModelsList) do
+				local modelName = model.Name
+				local modelOwner = model:FindFirstChild('Owner') and tostring(model:FindFirstChild('Owner').Value)
+				local modelType = model:FindFirstChild('Type') and tostring(model:FindFirstChild('Type').Value)
+				local modelTreeClass = model:FindFirstChild('TreeClass') and tostring(model:FindFirstChild('TreeClass').Value)
+
+				local VALID_TYPES = {"Gift", "Loose Item", "Tool", };
+				local VALID_TYPES_BOXED = {"Structure", "Furniture", "Vehicle", "Wire"};
+
+				-- IF MODEL TYPE IS VALID
+				if table.find(VALID_TYPES, modelType) and targetModelName == modelName and selectedOwner == modelOwner then
+					highlight(model)
+					-- IF MODEL TYPE IS VALID BUT SHOULD BE BOXED
+				elseif table.find(VALID_TYPES_BOXED, modelType) and targetModelName == modelName and selectedOwner == modelOwner then
+					local isBoxed = model:FindFirstChild('PurchasedBoxItemName')
+
+					if isBoxed then
+						highlight(model)
 					end
-					-- VALIDATE IF VALUES EXIST
-					if type(modelType) ~= 'string' and type(modelOwner) ~= 'string' then continue end
-	
-					if modelType == targetType then
-						highlighter(model, modelType)
-					end
+				elseif targetTreeClass and targetTreeClass == modelTreeClass and targetModelName == modelName and selectedOwner == modelOwner then
+					highlight(model)
 				end
 			end
 		end
 	end
-	
+
 	-- Connect input events
 	UserInputService.InputBegan:Connect(function(input)
-	
+
 		if isEnabled and input and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
 			isAltPressed = true
 		end
@@ -3376,19 +3345,19 @@ local script = G2L["3"];
 		end
 	end)
 	mouse.Button1Down:Connect(onMouseButtonClickDown)
-	
+
 end;
 task.spawn(C_3);
 -- StarterGui.SkibidiAzeuGUI.Scripts.ItemSelector
 local function C_4()
-local script = G2L["4"];
+	local script = G2L["4"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local ItemSelectorSwitch = screenGui and screenGui:FindFirstChild("switchItemSelector", true)
 	local GroupSelectorSwitch = screenGui and screenGui:FindFirstChild("switchGroupSelector", true)
 	local SelectedPlayerBtn = screenGui and screenGui:FindFirstChild("SelectedPlayerBtn", true)
-	
+
 	local MinimizeButton = screenGui and screenGui:FindFirstChild("MinimizeButton", true)
-	
+
 	local function sendNotification(title, text, duration)
 		game.StarterGui:SetCore("SendNotification", 
 			{
@@ -3398,26 +3367,26 @@ local script = G2L["4"];
 			}
 		)
 	end
-	
+
 	local player = game.Players.LocalPlayer
 	local mouse = player:GetMouse()
-	
+
 	local itemScreenGui = Instance.new("ScreenGui")
 	itemScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 	itemScreenGui.Name = "ItemSelectorUI"
 	local lassoFrame = Instance.new("Frame")
-	
+
 	local isEnabled = false
-	
+
 	ItemSelectorSwitch.AttributeChanged:Connect(function(attrName)
 		local isON = ItemSelectorSwitch:GetAttribute('isON')
-		
+
 		if not isON then
 			isEnabled = false
 			lassoFrame:Destroy()
 		else
 			local player_found = game.Players:FindFirstChild(SelectedPlayerBtn.Text)
-			
+
 			if not player_found then
 				sendNotification("ITEM SELECTION ERROR", "Invalid player selected.")
 				ItemSelectorSwitch:SetAttribute('isON', false) 
@@ -3426,22 +3395,22 @@ local script = G2L["4"];
 				GroupSelectorSwitch:SetAttribute('isON', false)
 				createLasso()
 			end
-			
+
 		end
 	end)
-	
+
 	local UserInputService = game:GetService("UserInputService")
 	local HighlightColor = Color3.fromRGB(0, 190, 0)
 	local DefaultColor = Color3.fromRGB(0, 190, 0)
-	
+
 	local isSelecting = false
 	local isAltPressed = false
-	
+
 	function createLasso()
 		if lassoFrame then lassoFrame:Destroy() end
 		local lFrame = Instance.new("Frame")
 		lassoFrame = lFrame
-	
+
 		lassoFrame.Parent = itemScreenGui
 		lassoFrame.BackgroundColor3 = HighlightColor
 		lassoFrame.BackgroundTransparency = 0.9
@@ -3449,22 +3418,22 @@ local script = G2L["4"];
 		lassoFrame.BorderSizePixel = 1
 		lassoFrame.Visible = false
 	end
-	
+
 	-- Function to highlight parts
 	local function highlighter(part)
 		local partName = part.Parent.Name
 		local partOwner = part.Parent:FindFirstChild("Owner") and part.Parent:FindFirstChild("Owner").Value or nil
 		local partLastInteraction = partOwner and part.Parent:FindFirstChild('Owner'):FindFirstChild('LastInteraction') or nil
 		local partType = part.Parent:FindFirstChild('Type') and part.Parent:FindFirstChild('Type').Value or nil
-	
+
 		if typeof(partOwner) == "Instance" then
 			partOwner = partOwner.Name
 		end
-	
+
 		local allowedTypes = {"Gift", "Loose Item", "Tool", "Structure", "Furniture", "Vehicle"}
 		local forChecking = {"Furniture", "Sawmill", "Structure", "Vehicle"}
 		local notAllowedPartNames = {"Sawmill"}
-	
+
 		if (partLastInteraction and table.find(allowedTypes, partType)) or partName == "Plank" or string.find(partName, '^Loose_') then
 			if table.find(forChecking, partType) then
 				local partPurchasedBoxItemName = part.Parent:FindFirstChild("PurchasedBoxItemName")
@@ -3472,13 +3441,13 @@ local script = G2L["4"];
 					return
 				end
 			end
-	
+
 			if partOwner ~= SelectedPlayerBtn.Text then
 				return
 			end
-	
+
 			local selectionBox = part:FindFirstChild("SelectionBox")
-	
+
 			if not selectionBox and not isAltPressed then
 				if string.find(partName, '^Loose_') then
 					for _, obj in pairs(part.Parent:GetChildren())  do
@@ -3517,13 +3486,13 @@ local script = G2L["4"];
 			end
 		end
 	end
-	
+
 	-- Function to check if position is inside the lasso area
 	local function isInsideLasso(lassoTopLeft, lassoSize, position)
 		return position.X >= lassoTopLeft.X and position.X <= lassoTopLeft.X + lassoSize.X
 			and position.Y >= lassoTopLeft.Y and position.Y <= lassoTopLeft.Y + lassoSize.Y
 	end
-	
+
 	-- Mouse movement function
 	local function onMouseMoved(input)
 		if not isEnabled then return end
@@ -3533,7 +3502,7 @@ local script = G2L["4"];
 			lassoFrame.Position = UDim2.new(0, math.min(mousePos.X, startPos.X), 0, math.min(mousePos.Y, startPos.Y))
 		end
 	end
-	
+
 	-- Handle mouse click on an object
 	local function onMouseButtonClickDown()
 		if not isEnabled then return end
@@ -3542,7 +3511,7 @@ local script = G2L["4"];
 			highlighter(clickedObject)
 		end
 	end
-	
+
 	-- Mouse button down event
 	local function onMouseButton1Down(input)
 		if not isEnabled then return end
@@ -3553,25 +3522,25 @@ local script = G2L["4"];
 			lassoFrame.Position = UDim2.new(0, startPos.X, 0, startPos.Y)
 			lassoFrame.Size = UDim2.new(0, 0, 0, 0)
 		end
-	
+
 		if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
 			isAltPressed = true
 		end
 	end
-	
+
 	-- Mouse button up event
 	local function onMouseButton1Up(input)
 		if not isEnabled then return end
 		if input and input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
 			isAltPressed = false
 		end
-	
+
 		if isSelecting then
 			isSelecting = false
 			local endPos = input.Position
 			local lassoTopLeft = Vector2.new(math.min(startPos.X, endPos.X), math.min(startPos.Y, endPos.Y))
 			local lassoSize = Vector2.new(math.abs(startPos.X - endPos.X), math.abs(startPos.Y - endPos.Y))
-	
+
 			-- Loop through all parts in the workspace
 			for _, part in pairs(workspace.PlayerModels:GetDescendants()) do
 				if part:IsA("BasePart") then
@@ -3596,7 +3565,7 @@ local script = G2L["4"];
 			lassoFrame.Visible = false
 		end
 	end
-	
+
 	-- Connect input events
 	UserInputService.InputBegan:Connect(onMouseButton1Down)
 	UserInputService.InputEnded:Connect(onMouseButton1Up)
@@ -3606,78 +3575,73 @@ end;
 task.spawn(C_4);
 -- StarterGui.SkibidiAzeuGUI.Scripts.DeselectAllItems
 local function C_5()
-local script = G2L["5"];
+	local script = G2L["5"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local thisButton = screenGui and screenGui:FindFirstChild("btnDeselectAllItems", true)
-	
+
 	thisButton.MouseButton1Click:Connect(function()
-		for _, model in pairs(workspace.PlayerModels:GetChildren()) do
-			if model:IsA("Model") and model:GetAttribute('azeuForTeleport') ~= nil then
+		local gameModelsList = {}
+
+		for _, model in ipairs(workspace.PlayerModels:GetChildren()) do
+			table.insert(gameModelsList, model)
+		end
+		for _, model in ipairs(workspace.LogModels:GetChildren()) do
+			table.insert(gameModelsList, model)
+		end
+
+		for _, model in pairs(gameModelsList)  do
+			if model:GetAttribute('azeuForTeleport') ~= nil then
 				model:SetAttribute('azeuForTeleport', nil)
-				
-				for _, part in pairs(model:GetChildren()) do
+
+				for _, part in pairs(model:GetDescendants())  do
 					local selectionBox = part:FindFirstChild("SelectionBox")
-					if selectionBox then
+					if part:IsA("BasePart") and selectionBox then
 						selectionBox:Destroy()
 					end
 				end
 			end
 		end
-		for _, model in pairs(workspace.LogModels:GetChildren()) do
-			if model:IsA("Model") and model:GetAttribute('azeuForTeleport') ~= nil then
-				model:SetAttribute('azeuForTeleport', nil)
-	
-				for _, part in pairs(model:GetChildren()) do
-					if(part:IsA("BasePart")) then
-						local selectionBox = part:FindFirstChild("SelectionBox")
-						if selectionBox then
-							selectionBox:Destroy()
-						end
-					end
-				end
-			end
-		end
 	end)
-	
+
 end;
 task.spawn(C_5);
 -- StarterGui.SkibidiAzeuGUI.Scripts.SetTeleportLocation
 local function C_6()
-local script = G2L["6"];
+	local script = G2L["6"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local thisButton = screenGui and screenGui:FindFirstChild("btnSetTeleportLocation", true)
 	local ItemOffsetBox = screenGui and screenGui:FindFirstChild("ItemOffsetBox", true)
-	
+
 	local player = game.Players.LocalPlayer
 	local localName = player.Name
 	local mouse = player:GetMouse()
-	
+
 	local isSetting = false
-	
+
 	thisButton.MouseButton1Click:Connect(function()
 		if isSetting == false then
 			isSetting = true
 			thisButton.BackgroundColor3 = Color3.fromRGB(0, 115, 0)
 		end
 	end)
-	
-	
+
+
 	mouse.Button1Down:Connect(function()
 		if isSetting then
 			createRedBall(mouse.Hit.Position + Vector3.new(0, tonumber(ItemOffsetBox.Text), 0))
 			isSetting = false		
 		end
 	end)
-	
-	
+
+
 	function createRedBall(position)
 		local targetTPPart = workspace:FindFirstChild("AzeuItemTeleportLocation")
 		if targetTPPart then
 			targetTPPart:Destroy()
 		end
-		
+
 		thisButton.BackgroundColor3 = Color3.fromRGB(26, 27, 30)
-		
+
 		local part = Instance.new("Part")
 		part.Size = Vector3.new(4, 1, 4) 
 		part.Position = position
@@ -3700,10 +3664,10 @@ local script = G2L["6"];
 		part.FrontSurface = Enum.SurfaceType.Smooth
 		part.TopSurface = Enum.SurfaceType.Smooth
 		part.Shape = Enum.PartType.Ball
-		
+
 		local BillboardGui = Instance.new("BillboardGui")
 		local TextLabel = Instance.new("TextLabel")
-	
+
 		BillboardGui.Parent = part
 		BillboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		BillboardGui.Active = true
@@ -3712,7 +3676,7 @@ local script = G2L["6"];
 		BillboardGui.LightInfluence = 1.000
 		BillboardGui.Size = UDim2.new(0, 200, 0, 50)
 		BillboardGui.StudsOffset = Vector3.new(0, 0.8, 0)
-	
+
 		TextLabel.Parent = BillboardGui
 		TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		TextLabel.BackgroundTransparency = 1.000
@@ -3723,9 +3687,9 @@ local script = G2L["6"];
 		TextLabel.Text = "TARGET"
 		TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
 		TextLabel.TextSize = 14.000
-	
+
 		local HighLight = Instance.new("Highlight")
-		
+
 		HighLight.Parent = part
 		HighLight.Adornee = part
 		HighLight.FillColor = Color3.fromRGB(255, 0, 0)
@@ -3733,21 +3697,21 @@ local script = G2L["6"];
 		HighLight.OutlineColor = Color3.fromRGB(255, 0, 0) 
 		HighLight.OutlineTransparency = 0.8
 	end
-	
+
 end;
 task.spawn(C_6);
 -- StarterGui.SkibidiAzeuGUI.Scripts.TeleportMe
 local function C_7()
-local script = G2L["7"];
+	local script = G2L["7"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local thisButton = screenGui and screenGui:FindFirstChild("btnTeleportMe", true)
-	
+
 	thisButton.MouseButton1Click:Connect(function()
 		local targetTPPart = workspace:FindFirstChild("AzeuItemTeleportLocation")
 		if targetTPPart then
 			local player = game.Players.LocalPlayer
 			local character = player.Character or player.CharacterAdded:Wait()
-			
+
 			character:MoveTo(targetTPPart.Position)
 		else
 			local starterGui = game:GetService("StarterGui")
@@ -3758,19 +3722,19 @@ local script = G2L["7"];
 			})	
 		end
 	end)
-	
+
 end;
 task.spawn(C_7);
 -- StarterGui.SkibidiAzeuGUI.Scripts.TeleportItems
 local function C_8()
-local script = G2L["8"];
+	local script = G2L["8"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local thisButton = screenGui and screenGui:FindFirstChild("btnTeleportItems", true)
 	local switchTeleportBack = screenGui and screenGui:FindFirstChild("switchTeleportBack", true)
 	local switchDeselectAfterTeleporting = screenGui and screenGui:FindFirstChild("switchDeselectAfterTeleporting", true)
-	
+
 	local ItemStatusFrame = screenGui and screenGui:FindFirstChild("ItemStatusFrame", true)
-	
+
 	local function sendNotification(title, text, duration)
 		local starterGui = game:GetService("StarterGui")
 		game.StarterGui:SetCore("SendNotification", 
@@ -3781,24 +3745,31 @@ local script = G2L["8"];
 			}
 		)
 	end
-	
+
 	local playerOffsetX = screenGui and screenGui:FindFirstChild("playerOffsetX", true)
 	local playerOffsetY = screenGui and screenGui:FindFirstChild("playerOffsetY", true)
 	local playerOffsetZ = screenGui and screenGui:FindFirstChild("playerOffsetZ", true)
-	
-	local player = game:GetService('Players').LocalPlayer
-	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-	local humanoid = character:WaitForChild("Humanoid")
-	
+
+	local LocalPlayer = game:GetService('Players').LocalPlayer
+	local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+	local Humanoid = Character:WaitForChild("Humanoid")
+
+	-- LISTENER FOR Chacter bugs lol
+	LocalPlayer.CharacterAdded:Connect(function(character)
+		task.wait(0.05)
+		Character = character
+		Humanoid = Character:WaitForChild("Humanoid")
+		HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+	end)
+
 	local isTeleporting = false
 	local tp_back_pos
 	local isEnabled = true
-	
+
 	thisButton.MouseButton1Click:Connect(function()
-		
 		turnOffSelectors()
-		
+
 		if isEnabled then
 			isEnabled = false
 			isTeleporting = not isTeleporting
@@ -3809,55 +3780,55 @@ local script = G2L["8"];
 			isEnabled = true
 		end
 	end)
-	
+
 	function main()
 		local TP_Part = workspace:FindFirstChild("AzeuItemTeleportLocation")
 		if not TP_Part then
 			return sendNotification("TELEPORT ITEM ERROR", "Please set a teleport location first.")
 		end
-	
+
 		if isTeleporting == false then
 			return
 		end
-	
+
 		-- SET TP BACK
-		tp_back_pos = humanoidRootPart.Position
-	
+		tp_back_pos = HumanoidRootPart.Position
+
 		local targetLocation = TP_Part.Position
 		local playerModels = workspace.PlayerModels:GetChildren()
 		local logModels = workspace.LogModels:GetChildren()
 		local selectedItems = {}
-	
+
 		for _, model in ipairs(playerModels) do
 			if(model:GetAttribute('azeuForTeleport') ~= nil) then
 				table.insert(selectedItems, model)
 			end
 		end
-	
+
 		for _, model in ipairs(logModels) do
 			if(model:GetAttribute('azeuForTeleport') ~= nil) then
 				table.insert(selectedItems, model)
 			end
 		end
-	
+
 		for _i, model in ipairs(selectedItems) do
-	
+
 			if isTeleporting == false then
 				sendNotification("TELEPORT ITEM STATUS", "Teleporting items has been stopped.")
 				break 
 			end
-	
+
 			thisButton.Text = string.format("TELEPORTING ITEMS (%s/%s)", _i, #selectedItems)
-	
+
 			local PrimaryPart = model.PrimaryPart
 			local WoodSection = model:FindFirstChild('WoodSection')
 			local InnerWood = model:FindFirstChild('InnerWood')
-	
+
 			-- ITEM STATUSES
 			local size = (325 / #selectedItems)
 			local tweenFrame = game:GetService('TweenService'):Create(ItemStatusFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad), { Size = ItemStatusFrame.Size + UDim2.new(0, size, 0, 0) })
 			tweenFrame:Play()
-	
+
 			if PrimaryPart then
 				tpPlayer(PrimaryPart.Position)
 				task.wait(0.1)
@@ -3898,39 +3869,39 @@ local script = G2L["8"];
 				end
 			end
 		end
-	
+
 		sendNotification("TELEPORT ITEM STATUS", "Teleporting items success.")
-	
+
 		ItemStatusFrame.Size = UDim2.new(0, 0, 0, 2)
 		thisButton.Text = "TELEPORT ITEMS"
 		isTeleporting = false
-	
+
 		local isTPBack = switchTeleportBack:GetAttribute('isON')
 		local isDeselectAfter = switchDeselectAfterTeleporting:GetAttribute('isON')
-	
+
 		if isTPBack then
-			character:MoveTo(tp_back_pos);
-			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			Character:MoveTo(tp_back_pos);
+			Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 		end
-	
+
 		if isDeselectAfter then
 			deselectAllItems()
 		end
 	end
-	
+
 	function turnOffSelectors()
 		local switchItemSelector = screenGui and screenGui:FindFirstChild("switchItemSelector", true)
 		local switchGroupSelector = screenGui and screenGui:FindFirstChild("switchGroupSelector", true)
-		
+
 		switchItemSelector:SetAttribute('isON', false)
 		switchGroupSelector:SetAttribute('isON', false)
 	end
-	
+
 	function tpPlayer(pos)
 		local posX = 0
 		local posY = 0
 		local posZ = 0
-	
+
 		if playerOffsetX.Text ~= "" then
 			posX = tonumber(playerOffsetX.Text)
 		end
@@ -3940,16 +3911,16 @@ local script = G2L["8"];
 		if playerOffsetZ.Text ~= "" then
 			posZ = tonumber(playerOffsetZ.Text)
 		end
-	
-		character:MoveTo(pos + Vector3.new(posX, posY, posZ))
-		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+
+		Character:MoveTo(pos + Vector3.new(posX, posY, posZ))
+		Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	end
-	
+
 	function deselectAllItems()
 		for _, model in pairs(workspace.PlayerModels:GetChildren()) do
 			if model:IsA("Model") and model:GetAttribute('azeuForTeleport') ~= nil then
 				model:SetAttribute('azeuForTeleport', nil)
-	
+
 				for _, part in pairs(model:GetChildren()) do
 					local selectionBox = part:FindFirstChild("SelectionBox")
 					if selectionBox then
@@ -3961,7 +3932,7 @@ local script = G2L["8"];
 		for _, model in pairs(workspace.LogModels:GetChildren()) do
 			if model:IsA("Model") and model:GetAttribute('azeuForTeleport') ~= nil then
 				model:SetAttribute('azeuForTeleport', nil)
-	
+
 				for _, part in pairs(model:GetChildren()) do
 					if(part:IsA("BasePart")) then
 						local selectionBox = part:FindFirstChild("SelectionBox")
@@ -3973,23 +3944,23 @@ local script = G2L["8"];
 			end
 		end
 	end
-	
+
 end;
 task.spawn(C_8);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchInfiniteJump.SwitchScript
 local function C_1a()
-local script = G2L["1a"];
+	local script = G2L["1a"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -3997,13 +3968,13 @@ local script = G2L["1a"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4011,13 +3982,13 @@ local script = G2L["1a"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4025,18 +3996,18 @@ end;
 task.spawn(C_1a);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchNoclip.SwitchScript
 local function C_25()
-local script = G2L["25"];
+	local script = G2L["25"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -4044,13 +4015,13 @@ local script = G2L["25"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4058,13 +4029,13 @@ local script = G2L["25"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4072,44 +4043,44 @@ end;
 task.spawn(C_25);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.flyBoxSpeed.LocalScript
 local function C_2b()
-local script = G2L["2b"];
+	local script = G2L["2b"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-		
+
 		if #this.Text > 4 then
 			this.Text = this.Text:sub(1, 4)
 		elseif this.Text ~= "" and (tonumber(this.Text) > 1000) then
 			this.Text = 1000
 		end
 	end)
-	
-	
+
+
 	this.FocusLost:Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if this.Text ~= nil and #this.Text < 1 or tonumber(this.Text) < 10 then
 			this.Text = 10
 		end
 	end)
-	
+
 end;
 task.spawn(C_2b);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchFly.SwitchScript
 local function C_38()
-local script = G2L["38"];
+	local script = G2L["38"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -4117,13 +4088,13 @@ local script = G2L["38"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4131,13 +4102,13 @@ local script = G2L["38"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4145,70 +4116,70 @@ end;
 task.spawn(C_38);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.walkBox.LocalScript
 local function C_40()
-local script = G2L["40"];
+	local script = G2L["40"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-		
+
 		if #this.Text > 4 then
 			this.Text = this.Text:sub(1, 4)
 		elseif this.Text ~= "" and (tonumber(this.Text) > 1000) then
 			this.Text = 1000
 		end
 	end)
-	
-	
+
+
 	this.FocusLost:Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if this.Text ~= nil and #this.Text < 1 or tonumber(this.Text) < 16 then
 			this.Text = 16
 		end
 	end)
-	
+
 end;
 task.spawn(C_40);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.jumpBox.LocalScript
 local function C_47()
-local script = G2L["47"];
+	local script = G2L["47"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-		
+
 		if #this.Text > 4 then
 			this.Text = this.Text:sub(1, 4)
 		elseif this.Text ~= "" and (tonumber(this.Text) > 1000) then
 			this.Text = 1000
 		end
 	end)
-	
-	
+
+
 	this.FocusLost:Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if this.Text ~= nil and #this.Text < 1 or tonumber(this.Text) < 50 then
 			this.Text = 50
 		end
 	end)
-	
+
 end;
 task.spawn(C_47);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchRemoveFog.SwitchScript
 local function C_56()
-local script = G2L["56"];
+	local script = G2L["56"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -4216,13 +4187,13 @@ local script = G2L["56"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4230,13 +4201,13 @@ local script = G2L["56"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4244,18 +4215,18 @@ end;
 task.spawn(C_56);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchAlwaysDay.SwitchScript
 local function C_60()
-local script = G2L["60"];
+	local script = G2L["60"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -4263,13 +4234,13 @@ local script = G2L["60"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4277,13 +4248,13 @@ local script = G2L["60"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4291,18 +4262,18 @@ end;
 task.spawn(C_60);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchWalkOnWater.SwitchScript
 local function C_6d()
-local script = G2L["6d"];
+	local script = G2L["6d"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -4310,13 +4281,13 @@ local script = G2L["6d"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4324,13 +4295,13 @@ local script = G2L["6d"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4338,18 +4309,18 @@ end;
 task.spawn(C_6d);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Main_Frame.Frame.Frame.switchRemoveWater.SwitchScript
 local function C_77()
-local script = G2L["77"];
+	local script = G2L["77"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -4357,13 +4328,13 @@ local script = G2L["77"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -4371,13 +4342,13 @@ local script = G2L["77"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -4385,34 +4356,34 @@ end;
 task.spawn(C_77);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Teleports_Frame.Frame.btnTeleportPLOT.ScriptTeleportPlot
 local function C_96()
-local script = G2L["96"];
+	local script = G2L["96"];
 	local this = script.Parent
 	local targetFrame = script.Parent.Parent.TargetFramePLOT
 	local ScrollingFrame = targetFrame.ScrollingFrame
-	
+
 	local TweenService = game:GetService('TweenService')
 	local openTween = TweenService:Create(targetFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Size = UDim2.new(0, 112, 0, 103)})
 	local closeTween = TweenService:Create(targetFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Size = UDim2.new(0, 112, 0, 5)})
 	local Players = game:GetService("Players")
 	local templateButton = ScrollingFrame.mainButton
-	
+
 	local ArrowImage = script.Parent.ArrowImage
 	local arrowOpen = TweenService:Create(ArrowImage, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Rotation = -180 })
 	local arrowClose = TweenService:Create(ArrowImage, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Rotation = 0 })
-	
+
 	local isEnabled = true
-	
+
 	this.MouseButton1Down:Connect(function()
 		if not isEnabled then return end -- DO NOT RUN CODE BELOW
-	
+
 		isEnabled = false
-	
+
 		for _, child in pairs(ScrollingFrame:GetChildren()) do
 			if child:IsA("TextButton") then
 				child:Destroy()
 			end
 		end
-	
+
 		for _, player in pairs(Players:GetPlayers()) do
 			local newButton = templateButton:Clone()
 			local uiCorner = Instance.new('UICorner')
@@ -4427,7 +4398,7 @@ local script = G2L["96"];
 				arrowClose:Play()
 			end)
 		end
-	
+
 		if targetFrame.Visible == false then
 			targetFrame.Visible = true
 			openTween:Play()
@@ -4438,12 +4409,12 @@ local script = G2L["96"];
 			arrowClose:Play()
 		end
 	end)
-	
+
 	openTween.Completed:Connect(function()
 		ScrollingFrame.Visible = true
 		isEnabled = true
 	end)
-	
+
 	closeTween.Completed:Connect(function()
 		targetFrame.Visible = false
 		isEnabled = true
@@ -4452,34 +4423,34 @@ end;
 task.spawn(C_96);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.FrameActives.Teleports_Frame.Frame.btnTeleportTO.ScriptTPTo
 local function C_a3()
-local script = G2L["a3"];
+	local script = G2L["a3"];
 	local this = script.Parent
 	local targetFrame = script.Parent.Parent.TargetFrameTpTO
 	local ScrollingFrame = targetFrame.ScrollingFrame
-	
+
 	local TweenService = game:GetService('TweenService')
 	local openTween = TweenService:Create(targetFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Size = UDim2.new(0, 112, 0, 103)})
 	local closeTween = TweenService:Create(targetFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Size = UDim2.new(0, 112, 0, 5)})
 	local Players = game:GetService("Players")
 	local templateButton = ScrollingFrame.mainButton
-	
+
 	local ArrowImage = script.Parent.ArrowImage
 	local arrowOpen = TweenService:Create(ArrowImage, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Rotation = -180 })
 	local arrowClose = TweenService:Create(ArrowImage, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Rotation = 0 })
-	
+
 	local isEnabled = true
-	
+
 	this.MouseButton1Down:Connect(function()
 		if not isEnabled then return end -- DO NOT RUN CODE BELOW
-		
+
 		isEnabled = false
-		
+
 		for _, child in pairs(ScrollingFrame:GetChildren()) do
 			if child:IsA("TextButton") then
 				child:Destroy()
 			end
 		end
-	
+
 		for _, player in pairs(Players:GetPlayers()) do
 			local newButton = templateButton:Clone()
 			local uiCorner = Instance.new('UICorner')
@@ -4494,7 +4465,7 @@ local script = G2L["a3"];
 			end)
 			if newButton.Text == game.Players.LocalPlayer.Name then newButton:Destroy() end
 		end
-		
+
 		if targetFrame.Visible == false then
 			targetFrame.Visible = true
 			openTween:Play()
@@ -4505,12 +4476,12 @@ local script = G2L["a3"];
 			arrowClose:Play()
 		end
 	end)
-	
+
 	openTween.Completed:Connect(function()
 		ScrollingFrame.Visible = true
 		isEnabled = true
 	end)
-	
+
 	closeTween.Completed:Connect(function()
 		targetFrame.Visible = false
 		isEnabled = true
@@ -4519,7 +4490,7 @@ end;
 task.spawn(C_a3);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.Scripts.MainScriptsBisakol
 local function C_d4()
-local script = G2L["d4"];
+	local script = G2L["d4"];
 	-- Target ScreenGUI
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	-- Target Frame
@@ -4533,7 +4504,7 @@ local script = G2L["d4"];
 	local Mouse = LocalPlayer:GetMouse()
 	-- Game Lighting
 	local Lighting = game:GetService("Lighting")
-	
+
 	-- LISTENER FOR Chacter bugs lol
 	LocalPlayer.CharacterAdded:Connect(function(character)
 		task.wait(0.05)
@@ -4541,22 +4512,22 @@ local script = G2L["d4"];
 		Humanoid = Character:WaitForChild("Humanoid")
 		HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 	end)
-	
+
 	-- MAKE IT DRAGGABLE LMAO
 	spawn(function()
 		task.wait(0.1)
 		screenGui.BisakolFrame.Draggable = true
 		screenGui.BisakolFrame.Active = true
 	end)
-	
+
 	-- WALK SPEED
 	local walkBox = targetFrame:FindFirstChild("walkBox", true)
 	local isWalkSpeeding = false
-	
+
 	walkBox.FocusLost:Connect(function()
 		spawn(function()
 			task.wait(0.01)
-	
+
 			if isWalkSpeeding == false then
 				game:GetService("RunService").RenderStepped:Connect(function()
 					task.wait()
@@ -4568,29 +4539,29 @@ local script = G2L["d4"];
 			end
 		end)
 	end)
-	
+
 	-- JUMP POWER
 	local jumpBox = targetFrame:FindFirstChild("jumpBox", true)
-	
+
 	jumpBox.FocusLost:Connect(function()
 		spawn(function()
 			task.wait(0.03)
 			Humanoid.JumpPower = tonumber(jumpBox.Text)
 		end)
 	end)
-	
+
 	-- FLY FLY
 	local switchFly = targetFrame:FindFirstChild("switchFly", true)
 	local flyBoxSpeed = targetFrame:FindFirstChild("flyBoxSpeed", true)
 	spawn(function()
 		task.wait(0.01)
-	
-	
+
+
 		local flying = false
 		local flySpeed = 1
 		local bodyGyro, bodyVelocity
 		local control = {f = 0, b = 0, l = 0, r = 0}
-	
+
 		local function toggleFly()
 			if flying then
 				flying = false
@@ -4601,15 +4572,15 @@ local script = G2L["d4"];
 			else
 				flying = true
 				Humanoid.PlatformStand = true
-	
+
 				bodyGyro = Instance.new("BodyGyro", HumanoidRootPart)
 				bodyGyro.P = 9e4
 				bodyGyro.maxTorque = Vector3.new(9e9, 9e9, 9e9)
 				bodyGyro.cframe = HumanoidRootPart.CFrame
-	
+
 				bodyVelocity = Instance.new("BodyVelocity", HumanoidRootPart)
 				bodyVelocity.maxForce = Vector3.new(9e9, 9e9, 9e9)
-	
+
 				while flying do
 					task.wait()
 					local cam = workspace.CurrentCamera
@@ -4619,12 +4590,12 @@ local script = G2L["d4"];
 				end
 			end
 		end
-	
+
 		Mouse.KeyDown:Connect(function(key)
 			local isON = switchFly:GetAttribute('isON')
-	
+
 			if isON == false then return end
-	
+
 			if key:lower() == "q" then
 				toggleFly()
 			elseif key:lower() == "w" then
@@ -4637,54 +4608,54 @@ local script = G2L["d4"];
 				control.r = 1
 			end
 		end)
-	
+
 		Mouse.KeyUp:Connect(function(key)
 			local isON = switchFly:GetAttribute('isON')
-	
+
 			if isON == false then return end
-	
+
 			if key:lower() == "w" or key:lower() == "s" then
 				control.f, control.b = 0, 0
 			elseif key:lower() == "a" or key:lower() == "d" then
 				control.l, control.r = 0, 0
 			end
 		end)
-	
+
 		flyBoxSpeed.FocusLost:Connect(function()
 			spawn(function()
 				task.wait(0.01)
 				flySpeed = tonumber(flyBoxSpeed.Text)
 			end)
 		end)
-	
+
 		switchFly.AttributeChanged:Connect(function()
 			local isON = switchFly:GetAttribute('isON')
-	
+
 			if not isON then
 				flying = true
 				toggleFly()
 			end
 		end)
 	end)
-	
+
 	-- HALAKA INFINITE JUMP NALIMTAN
 	local switchInfiniteJump = targetFrame:FindFirstChild("switchInfiniteJump", true)
 	spawn(function()
 		local userInputService = game:GetService("UserInputService")
 		local isInfiniteJump = false
-	
+
 		local function doInfiniteJump()
 			if isInfiniteJump then
 				Humanoid:ChangeState("Jumping")
 			end
 		end
 		userInputService.JumpRequest:Connect(doInfiniteJump)
-	
+
 		switchInfiniteJump.AttributeChanged:Connect(function()
 			isInfiniteJump = switchInfiniteJump:GetAttribute('isON')
 		end)
 	end)
-	
+
 	-- NOCLIP
 	local switchNoclip = targetFrame:FindFirstChild("switchNoclip", true)
 	spawn(function()
@@ -4708,57 +4679,62 @@ local script = G2L["d4"];
 				end
 			end
 		end
-	
+
 		switchNoclip.AttributeChanged:Connect(function()
 			local isON = switchNoclip:GetAttribute('isON')
-	
+
 			isNoclip = isON
 			doNoclip()
 		end)
 	end)
-	
+
 	-- REMOVE FOG
 	local switchRemoveFog = targetFrame:FindFirstChild("switchRemoveFog", true)
 	spawn(function()
 		local originalFogStart = Lighting.FogStart
 		local originalFogEnd = Lighting.FogEnd
-	
+
 		switchRemoveFog.AttributeChanged:Connect(function()
 			local isON = switchRemoveFog:GetAttribute('isON')
-	
+
 			if isON then
-				Lighting.FogStart = 1000000
-				Lighting.FogEnd = 1000000
+				game:GetService("RunService"):BindToRenderStep("FogStart", Enum.RenderPriority.Last.Value, function()
+					Lighting.ExposureCompensation = 1
+					Lighting.FogStart = 10000000000000000
+					Lighting.FogEnd = 10000000000000000
+				end)
 			else
+				Lighting.ExposureCompensation = 0
 				Lighting.FogStart = originalFogStart
 				Lighting.FogEnd = originalFogEnd
+				game:GetService("RunService"):UnbindFromRenderStep("FogStart")
 			end
 		end)
 	end)
-	
+
 	-- ALWAYS DAY
 	local switchAlwaysDay = targetFrame:FindFirstChild("switchAlwaysDay", true)
 	spawn(function()
 		switchAlwaysDay.AttributeChanged:Connect(function()
 			local isON = switchAlwaysDay:GetAttribute('isON')
-	
+
 			if isON then
 				game:GetService("RunService"):BindToRenderStep("AlwaysDay", Enum.RenderPriority.Last.Value, function()
-					Lighting.ClockTime = 12 -- Keep it at noon
+					Lighting.ClockTime = 12
 				end)
-	
+
 			else
 				game:GetService("RunService"):UnbindFromRenderStep("AlwaysDay")
 			end
 		end)
 	end)
-	
+
 	-- WALK ON WATER
 	local switchWalkOnWater = targetFrame:FindFirstChild("switchWalkOnWater", true)
 	spawn(function()
 		switchWalkOnWater.AttributeChanged:Connect(function()
 			local isON = switchWalkOnWater:GetAttribute('isON')
-	
+
 			if isON then
 				for _, part in pairs(game.Workspace.Water:GetChildren()) do
 					if part:IsA('BasePart') and part.Name == "Water" then
@@ -4774,14 +4750,14 @@ local script = G2L["d4"];
 			end
 		end)
 	end)
-	
+
 	-- REMOVE WATER
 	local switchRemoveWater = targetFrame:FindFirstChild("switchRemoveWater", true)
 	spawn(function()
 		local waterPartsStored = {}
 		switchRemoveWater.AttributeChanged:Connect(function()
 			local isON = switchRemoveWater:GetAttribute('isON')
-	
+
 			if isON then
 				for _, part in ipairs(game.Workspace.Water:GetChildren()) do
 					if part:IsA("BasePart") and part.Name == "Water" then
@@ -4793,7 +4769,7 @@ local script = G2L["d4"];
 						part.Size = Vector3.new(0, 0, 0)
 					end
 				end
-	
+
 			else
 				for _, partData in ipairs(waterPartsStored) do
 					partData.Part.Size = partData.OriginalSize
@@ -4807,31 +4783,31 @@ end;
 task.spawn(C_d4);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.Scripts.MiscScripts
 local function C_d5()
-local script = G2L["d5"];
+	local script = G2L["d5"];
 	-- Target ScreenGUI
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	-- Target Frame
 	local targetFrame = screenGui and screenGui.BisakolFrame:FindFirstChild("Misc_Frame", true)
 	-- LocalPlayer Thingy
 	local LocalPlayer = game.Players.LocalPlayer
-	
+
 	-- TELEPORT PLAYER
 	local function teleportPlayer(pos)
 		local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 		local Humanoid = Character:WaitForChild("Humanoid")
-		
+
 		Character:MoveTo(pos + Vector3.new(0, 10, 0))
 		Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	end
-	
+
 	-- FREE LAND BUTTON
 	spawn(function()
 		task.wait(0.01)
 		local btnFreeLand = targetFrame:FindFirstChild("btnFreeLand", true)
-	
+
 		btnFreeLand.MouseButton1Click:Connect(function()
 			local plotPosition
-	
+
 			for a, b in pairs(workspace.Properties:GetChildren()) do 
 				if b:FindFirstChild("Owner") and b:FindFirstChild("OriginSquare") and b.Owner.Value == nil then 
 					game.ReplicatedStorage.PropertyPurchasing.ClientPurchasedProperty:FireServer(b, b.OriginSquare.OriginCFrame.Value.p + Vector3.new(0, 3, 0))
@@ -4848,22 +4824,22 @@ local script = G2L["d5"];
 			teleportPlayer(plotPosition)
 		end)
 	end)
-	
+
 	-- MAX LAND BUTTON
 	spawn(function()
 		task.wait(0.01)
 		local btnMaxLand = targetFrame:FindFirstChild("btnMaxLand", true)
-	
+
 		btnMaxLand.MouseButton1Click:Connect(function()
 			local base, square
-	
+
 			for i, v in pairs(game:GetService("Workspace").Properties:GetChildren()) do
 				if v:FindFirstChild("Owner") and v.Owner.Value == game.Players.LocalPlayer then
 					base = v
 					square = v.OriginSquare
 				end
 			end
-	
+
 			local makebase = function(pos)
 				local Event = game:GetService("ReplicatedStorage").PropertyPurchasing.ClientExpandedProperty
 				Event:FireServer(base, pos)
@@ -4897,17 +4873,17 @@ local script = G2L["d5"];
 			makebase(CFrame.new(spos.X - 40, spos.Y, spos.Z - 80))
 		end)
 	end)
-	
+
 	-- B-TOOLS BUTTON
 	spawn(function()
 		task.wait(0.01)
 		local btnBTOOLS = targetFrame:FindFirstChild("btnBTOOLS", true)
-	
+
 		btnBTOOLS.MouseButton1Click:Connect(function()
 			local mouse = LocalPlayer:GetMouse()
 			local deletetool = Instance.new("Tool", LocalPlayer.Backpack)
 			local undotool = Instance.new("Tool", LocalPlayer.Backpack)
-	
+
 			local movedetect = false
 			local movingpart = nil
 			local movetransparency = 0
@@ -4940,7 +4916,7 @@ local script = G2L["d5"];
 			end)
 			undotool.Activated:Connect(function()
 				if editedparts[#editedparts] == nil then return end
-	
+
 				createnotification("UNDO TOOL", "You have undone "..editedparts[#editedparts].Name)
 				editedparts[#editedparts].Parent = parentfix[#parentfix]
 				editedparts[#editedparts].CFrame = positionfix[#positionfix]
@@ -4950,13 +4926,13 @@ local script = G2L["d5"];
 			end)
 		end)
 	end)
-	
+
 	-- CONTROL CLICK TP BUTTON
 	spawn(function()
 		task.wait(0.01)
 		local btnControlTP = targetFrame:FindFirstChild("btnControlTP", true)
 		local Mouse = LocalPlayer:GetMouse()
-	
+
 		btnControlTP.MouseButton1Click:Connect(function()
 			Mouse.Button1Down:connect(function()
 				if not game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then return end
@@ -4969,7 +4945,7 @@ end;
 task.spawn(C_d5);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.Scripts.SidebarScripts
 local function C_d6()
-local script = G2L["d6"];
+	local script = G2L["d6"];
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	-- FRAMES
 	local Main_Frame = screenGui and screenGui.BisakolFrame:FindFirstChild("Main_Frame", true)
@@ -4980,13 +4956,13 @@ local script = G2L["d6"];
 	local btnTeleports = screenGui and screenGui.BisakolFrame:FindFirstChild("btnTeleports", true)
 	local btnMisc = screenGui and screenGui.BisakolFrame:FindFirstChild("btnMisc", true)
 	local btnItemTeleporter = screenGui and screenGui.BisakolFrame:FindFirstChild("btnItemTeleporter", true)
-	
+
 	local function setVisible(main, teleport, misc)
 		Main_Frame.Visible = main
 		Teleports_Frame.Visible = teleport
 		Misc_Frame.Visible = misc
 	end
-	
+
 	btnMain.MouseButton1Click:Connect(function()
 		setVisible(true, false, false)
 	end)
@@ -4996,26 +4972,26 @@ local script = G2L["d6"];
 	btnMisc.MouseButton1Click:Connect(function()
 		setVisible(false, false, true)
 	end)
-	
+
 	btnItemTeleporter.MouseButton1Click:Connect(function()
 		local teleporterFrame = screenGui and screenGui:FindFirstChild("AzeuMainFrame", true)
-	
+
 		teleporterFrame.Visible = true
-	
+
 		teleporterFrame:SetAttribute('isOpen', true)
 	end)
 end;
 task.spawn(C_d6);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.BisakolMainFrame.Scripts.TeleportScripts
 local function C_d7()
-local script = G2L["d7"];
+	local script = G2L["d7"];
 	-- Target ScreenGUI
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	-- Target Frame
 	local targetFrame = screenGui and screenGui.BisakolFrame:FindFirstChild("Teleports_Frame", true)
 	-- PLAYER THING
-	
-	
+
+
 	-- TELEPORT PLAYER
 	local function teleportPlayer(pos)
 		local LocalPlayer = game.Players.LocalPlayer
@@ -5025,7 +5001,7 @@ local script = G2L["d7"];
 		task.wait(0.01)
 		Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	end
-	
+
 	-- WOODS WAYPOINTS
 	spawn(function()
 		task.wait(0.01)
@@ -5073,7 +5049,7 @@ local script = G2L["d7"];
 				Vector3.new(-1069.24, 143.00, -1100.39)
 			}
 		}
-	
+
 		for _, item in pairs(waypoints) do
 			local button = templateButton:Clone()
 			local uiCorner = Instance.new('UICorner')
@@ -5088,7 +5064,7 @@ local script = G2L["d7"];
 		end
 		templateButton:Destroy()
 	end)
-	
+
 	-- STORE OTHERS
 	spawn(function()
 		task.wait(0.01)
@@ -5140,7 +5116,7 @@ local script = G2L["d7"];
 				Vector3.new(331.13, 45.80, 1943.91)
 			},
 		}
-	
+
 		for _, item in pairs(waypoints) do
 			local button = templateButton:Clone()
 			local uiCorner = Instance.new('UICorner')
@@ -5155,15 +5131,15 @@ local script = G2L["d7"];
 		end
 		templateButton:Destroy()
 	end)
-	
+
 	-- TP TO PLAYER PLOT
 	spawn(function()
 		task.wait(0.01)
 		local btnTeleportPLOT = targetFrame:FindFirstChild("btnTeleportPLOT", true)
-	
+
 		btnTeleportPLOT.AttributeChanged:Connect(function()
 			local selectedPlayer = btnTeleportPLOT:GetAttribute('selectedPlayer')
-	
+
 			if selectedPlayer ~= nil and game.Players:FindFirstChild(selectedPlayer) then
 				for _, property in ipairs(game.Workspace.Properties:GetChildren()) do
 					local owner = property:FindFirstChild('Owner')
@@ -5179,26 +5155,26 @@ local script = G2L["d7"];
 			end
 		end)
 	end)
-	
+
 	-- TP TO PLAYER POSITION
 	spawn(function()
 		task.wait(0.01)
 		local btnTeleportTO = targetFrame:FindFirstChild("btnTeleportTO", true)
-	
+
 		btnTeleportTO.AttributeChanged:Connect(function()
 			local selectedPlayer = btnTeleportTO:GetAttribute('selectedPlayer')
-	
+
 			if selectedPlayer ~= nil and game.Players:FindFirstChild(selectedPlayer) then
 				local targetPlayer = game.Players:FindFirstChild(selectedPlayer)
-	
+
 				if targetPlayer and targetPlayer.Character then
 					local playerHead = targetPlayer.Character:WaitForChild("Head") 
 					local position = playerHead.Position
-	
+
 					teleportPlayer(position)
 					btnTeleportTO:SetAttribute('selectedPlayer', nil)
 				end
-	
+
 			end
 		end)
 	end)
@@ -5206,30 +5182,30 @@ end;
 task.spawn(C_d7);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.TopFrame.Frame.MainMinimizeButton.MainMinimizeButton
 local function C_dd()
-local script = G2L["dd"];
+	local script = G2L["dd"];
 	local this = script.Parent
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local mainFrame = screenGui and screenGui:FindFirstChild("BisakolFrame", true)
-	
+
 	local TweenService = game:GetService('TweenService')
 	local openTween = TweenService:Create(mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), { Size = UDim2.new(0, 520, 0, 310) })
 	local closeTween = TweenService:Create(mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), { Size = UDim2.new(0, 520, 0, 25) })
-	
+
 	local isEnabled = true
-	
+
 	this.MouseButton1Down:Connect(function()
 		local isOpen = mainFrame:GetAttribute('isOpen')
-		
+
 		if isEnabled == false then return end
-		
+
 		isEnabled = false
-		
+
 		mainFrame:SetAttribute('isOpen', not isOpen)
 	end)
-	
+
 	mainFrame.AttributeChanged:Connect(function()
 		local isOpen = mainFrame:GetAttribute('isOpen')
-	
+
 		if isOpen then
 			mainFrame.TopFrame.AntiCornerFrame.Visible = true
 			openTween:Play()
@@ -5239,12 +5215,12 @@ local script = G2L["dd"];
 			closeTween:Play()
 		end
 	end)
-	
+
 	openTween.Completed:Connect(function()
 		mainFrame.BisakolMainFrame.Visible = true
 		isEnabled = true
 	end)
-	
+
 	closeTween.Completed:Connect(function()
 		isEnabled = true
 	end)
@@ -5252,11 +5228,11 @@ end;
 task.spawn(C_dd);
 -- StarterGui.SkibidiAzeuGUI.BisakolFrame.TopFrame.Frame.TextButton.LocalScript
 local function C_df()
-local script = G2L["df"];
+	local script = G2L["df"];
 	script.Parent.MouseButton1Click:Connect(function()
 		local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 		local mainFrame = screenGui and screenGui:FindFirstChild("AzeuMainFrame", true)
-	
+
 		for _, obj in pairs(mainFrame:GetDescendants()) do
 			if obj:IsA('TextButton') and obj:GetAttribute('isON') ~= nil then
 				obj:SetAttribute('isON', false)
@@ -5264,46 +5240,46 @@ local script = G2L["df"];
 				obj:Destroy()
 			end
 		end
-	
+
 		screenGui:Destroy()
 	end)
 end;
 task.spawn(C_df);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.TextLabel.Frame.TextButton.LocalScript
 local function C_e8()
-local script = G2L["e8"];
+	local script = G2L["e8"];
 	script.Parent.MouseButton1Click:Connect(function()
 		local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 		local mainFrame = screenGui and screenGui:FindFirstChild("AzeuMainFrame", true)
-	
+
 		for _, obj in pairs(mainFrame:GetDescendants()) do
 			if obj:IsA('TextButton') and obj:GetAttribute('isON') ~= nil then
 				obj:SetAttribute('isON', false)
 			end
 		end
-	
+
 		mainFrame.Visible = false
 	end)
 end;
 task.spawn(C_e8);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.TextLabel.Frame.MinimizeButton.LocalScriptMinimize
 local function C_ea()
-local script = G2L["ea"];
+	local script = G2L["ea"];
 	local this = script.Parent
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local mainFrame = screenGui and screenGui:FindFirstChild("AzeuMainFrame", true)
-	
+
 	local TweenService = game:GetService('TweenService')
 	local openTween = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), { Size = mainFrame.Size })
 	local closeTween = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quint), { Size = UDim2.new(0, 382, 0, 31) })
-	
+
 	local isEnabled = true
-	
+
 	this.MouseButton1Down:Connect(function()
 		if not isEnabled then return end
-		
+
 		isEnabled = false
-		
+
 		if(mainFrame:GetAttribute('isOpen')) then
 			closeTween:Play()
 			mainFrame:SetAttribute('isOpen', false)
@@ -5314,7 +5290,7 @@ local script = G2L["ea"];
 			task.wait(0.25)
 			itemsVisible(true)
 		end
-		
+
 		openTween.Completed:Connect(function()
 			itemsVisible(true)
 		end)
@@ -5324,7 +5300,7 @@ local script = G2L["ea"];
 		task.wait(0.2)
 		isEnabled = true
 	end)
-	
+
 	function itemsVisible(visible)
 		for _, item in pairs(mainFrame:GetChildren())  do
 			if item:IsA('Frame') or item:IsA('TextButton') then
@@ -5342,18 +5318,18 @@ end;
 task.spawn(C_ea);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchItemSelector.SwitchScript
 local function C_f3()
-local script = G2L["f3"];
+	local script = G2L["f3"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -5361,13 +5337,13 @@ local script = G2L["f3"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -5375,13 +5351,13 @@ local script = G2L["f3"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -5389,18 +5365,18 @@ end;
 task.spawn(C_f3);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchGroupSelector.SwitchScript
 local function C_101()
-local script = G2L["101"];
+	local script = G2L["101"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -5408,13 +5384,13 @@ local script = G2L["101"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -5422,13 +5398,13 @@ local script = G2L["101"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -5436,18 +5412,18 @@ end;
 task.spawn(C_101);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchTeleportBack.SwitchScript
 local function C_10b()
-local script = G2L["10b"];
+	local script = G2L["10b"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -5455,13 +5431,13 @@ local script = G2L["10b"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -5469,13 +5445,13 @@ local script = G2L["10b"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -5483,7 +5459,7 @@ end;
 task.spawn(C_10b);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.SelectedPlayerBtn.LocalScript
 local function C_115()
-local script = G2L["115"];
+	local script = G2L["115"];
 	local this = script.Parent
 	local targetFrame = script.Parent.Parent.TargetFrameITEMOWNER
 	local TweenService = game:GetService('TweenService')
@@ -5491,18 +5467,20 @@ local script = G2L["115"];
 	local closeTween = TweenService:Create(targetFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(0, 204, 0, 9)})
 	local Players = game:GetService("Players")
 	local templateButton = script.Parent.Parent.TargetFrameITEMOWNER.ScrollingFrame.PlayerBtn
-	
+
 	local ArrowImage = script.Parent.ArrowImage
 	local ArrowOpenTween = TweenService:Create(ArrowImage, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Rotation = -180 })
 	local ArrowCloseTween = TweenService:Create(ArrowImage, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Rotation = 0 })
-	
+
 	this.MouseButton1Down:Connect(function()
 		for _, child in pairs(targetFrame.ScrollingFrame:GetChildren()) do
 			if child:IsA("TextButton") then
 				child:Destroy()
 			end
 		end
-	
+
+		this.Text = game.Players.LocalPlayer.Name
+
 		for _, player in pairs(Players:GetPlayers()) do
 			local newButton = templateButton:Clone()
 			local uiCorner = Instance.new('UICorner')
@@ -5517,7 +5495,7 @@ local script = G2L["115"];
 		end
 		doStuff()
 	end)
-	
+
 	function doStuff()
 		if not (targetFrame.Visible) then
 			openTween:Play()
@@ -5535,10 +5513,10 @@ local script = G2L["115"];
 			end)
 		end
 	end
-	
+
 	function switchedInteractable(bool) 
 		local mainFrame = script.Parent.Parent.Parent
-		
+
 		for _, item in pairs(mainFrame:GetDescendants()) do
 			if item:IsA('TextButton') and item:GetAttribute('isON') ~= nil then
 				item.Interactable = bool
@@ -5549,15 +5527,15 @@ end;
 task.spawn(C_115);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchItemOffset.SetInteractable
 local function C_122()
-local script = G2L["122"];
+	local script = G2L["122"];
 	local switch = script.Parent
 	local xBox = script.Parent.Parent.ItemCoordFrame.x1
 	local yBox = script.Parent.Parent.ItemCoordFrame.ItemOffsetBox
 	local zBox = script.Parent.Parent.ItemCoordFrame.x2
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
-		
+
 		if isON == true then
 			xBox.Interactable = true
 			yBox.Interactable = true
@@ -5572,18 +5550,18 @@ end;
 task.spawn(C_122);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchItemOffset.SwitchScript
 local function C_123()
-local script = G2L["123"];
+	local script = G2L["123"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -5591,13 +5569,13 @@ local script = G2L["123"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -5605,13 +5583,13 @@ local script = G2L["123"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -5619,70 +5597,70 @@ end;
 task.spawn(C_123);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.ItemCoordFrame.x1.LocalScript
 local function C_127()
-local script = G2L["127"];
+	local script = G2L["127"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-		
+
 		this.Text = 0
 	end)
-	
+
 end;
 task.spawn(C_127);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.ItemCoordFrame.ItemOffsetBox.LocalScript
 local function C_12a()
-local script = G2L["12a"];
+	local script = G2L["12a"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-		
+
 		if #this.Text > 3 then
 			this.Text = this.Text:sub(1, 3)
 		elseif this.Text ~= "" and (tonumber(this.Text) > 100) then
 			this.Text = 100
 		end
 	end)
-	
-	
+
+
 	this.FocusLost:Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if this.Text ~= nil and #this.Text < 1 or tonumber(this.Text) < 1 then
 			this.Text = 1
 		end
 	end)
-	
+
 end;
 task.spawn(C_12a);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.ItemCoordFrame.x2.LocalScript
 local function C_12d()
-local script = G2L["12d"];
+	local script = G2L["12d"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-		
+
 		this.Text = 0
 	end)
-	
+
 end;
 task.spawn(C_12d);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchDeselectAfterTeleporting.SwitchScript
 local function C_137()
-local script = G2L["137"];
+	local script = G2L["137"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -5690,13 +5668,13 @@ local script = G2L["137"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -5704,13 +5682,13 @@ local script = G2L["137"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -5718,13 +5696,13 @@ end;
 task.spawn(C_137);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchPlayerOffset.SetInteractable
 local function C_144()
-local script = G2L["144"];
+	local script = G2L["144"];
 	local switch = script.Parent
 	local targetFrame = script.Parent.Parent.CoordFrame
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
-		
+
 		if isON == true then
 			targetFrame.Interactable = true	
 		else
@@ -5735,18 +5713,18 @@ end;
 task.spawn(C_144);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.switchPlayerOffset.SwitchScript
 local function C_145()
-local script = G2L["145"];
+	local script = G2L["145"];
 	local switch = script.Parent
 	local circle = script.Parent.Circle
 	local TweenService = game:GetService('TweenService')
 	local isClickable = true
-	
+
 	switch.MouseButton1Click:Connect(function()
 		if isClickable == true then
 			isClickable = false
-			
+
 			local isON = switch:GetAttribute('isON')
-			
+
 			if isON == true then
 				switch:SetAttribute('isON', false)
 			else
@@ -5754,13 +5732,13 @@ local script = G2L["145"];
 			end
 		end
 	end)
-	
+
 	switch.AttributeChanged:Connect(function()
 		local isON = switch:GetAttribute('isON')
 		local targetPosition;
 		local desiredColor;
-		
-		
+
+
 		if isON == true then
 			desiredColor = Color3.fromRGB(68, 225, 48)
 			targetPosition = UDim2.new(0.6, 0, 0.15, 0)
@@ -5768,13 +5746,13 @@ local script = G2L["145"];
 			targetPosition = UDim2.new(0.1, 0, 0.15, 0)
 			desiredColor = Color3.fromRGB(107, 129, 140)
 		end
-		
+
 		local color_tween = TweenService:Create(circle, TweenInfo.new(0.2), { BackgroundColor3 = desiredColor })
 		local tween = TweenService:Create(circle, TweenInfo.new(0.2), { Position = targetPosition })
-		
+
 		color_tween:Play()
 		tween:Play()
-		
+
 		task.wait(0.4)
 		isClickable = true
 	end)
@@ -5782,12 +5760,12 @@ end;
 task.spawn(C_145);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.CoordFrame.playerOffsetX.LocalScript
 local function C_149()
-local script = G2L["149"];
+	local script = G2L["149"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if #this.Text < 1 then
 			this.Text = 0
 		elseif #this.Text > 3 then
@@ -5798,17 +5776,17 @@ local script = G2L["149"];
 			--this.Text = 5
 		end
 	end)
-	
+
 end;
 task.spawn(C_149);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.CoordFrame.playerOffsetZ.LocalScript
 local function C_14c()
-local script = G2L["14c"];
+	local script = G2L["14c"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if #this.Text < 1 then
 			this.Text = 0
 		elseif #this.Text > 3 then
@@ -5819,17 +5797,17 @@ local script = G2L["14c"];
 			--this.Text = 5
 		end
 	end)
-	
+
 end;
 task.spawn(C_14c);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.Frame.CoordFrame.playerOffsetY.LocalScript
 local function C_14f()
-local script = G2L["14f"];
+	local script = G2L["14f"];
 	local this = script.Parent
-	
+
 	this:GetPropertyChangedSignal("Text"):Connect(function()
 		this.Text = this.Text:gsub("%D", "")
-	
+
 		if #this.Text < 1 then
 			this.Text = 0
 		elseif #this.Text > 3 then
@@ -5840,40 +5818,40 @@ local script = G2L["14f"];
 			--this.Text = 5
 		end
 	end)
-	
+
 end;
 task.spawn(C_14f);
 -- StarterGui.SkibidiAzeuGUI.AzeuMainFrame.MainScript
 local function C_151()
-local script = G2L["151"];
+	local script = G2L["151"];
 	local this = script.Parent
 	local screenGui = script:FindFirstAncestorOfClass("ScreenGui")
 	local mainFrame = screenGui and screenGui:FindFirstChild("AzeuMainFrame", true)
-	
+
 	-- SETUP DEFAULT SETTINGS
 	local default = {}
-	
+
 	default["ITEM_OFFSET"] = false
 	default["PLAYER_OFFSET"] = false
 	default["DESELECT_AFTER_TP"] = true
 	default["TELEPORT_BACK"] = true
-	
+
 	spawn(function()
 		task.wait(0.5)
 		local ITEM_OFFSET = screenGui and screenGui:FindFirstChild("switchItemOffset", true)
 		local PLAYER_OFFSET = screenGui and screenGui:FindFirstChild("switchPlayerOffset", true)
 		local DESELECT_AFTER_TP = screenGui and screenGui:FindFirstChild("switchDeselectAfterTeleporting", true)
 		local TELEPORT_BACK = screenGui and screenGui:FindFirstChild("switchTeleportBack", true)
-		
+
 		ITEM_OFFSET:SetAttribute('isON', default.ITEM_OFFSET)
 		PLAYER_OFFSET:SetAttribute('isON', default.PLAYER_OFFSET)
 		DESELECT_AFTER_TP:SetAttribute('isON', default.DESELECT_AFTER_TP)
 		TELEPORT_BACK:SetAttribute('isON', default.TELEPORT_BACK)
 	end)
-	
+
 	-- MAKE IT DRAGGABLE
 	script.Parent.Draggable = true
-	
+
 	-- SEND SOME NOTIFS
 	-- Send notif scripts
 	local function sendNotification(title, text, duration)
@@ -5886,17 +5864,17 @@ local script = G2L["151"];
 			}
 		)
 	end
-	
-	
+
+
 	spawn(function()
 		sendNotification("DEVELOPER MESSAGE", "This script has is made by Azeu :>", 10)
 		task.wait(1)
 		sendNotification("WARNING!", "This script is still in beta, you may encounter some bugs.", 10)
 	end)
-	
-	
-	
-	
+
+
+
+
 end;
 task.spawn(C_151);
 
